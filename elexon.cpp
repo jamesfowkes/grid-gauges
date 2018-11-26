@@ -10,6 +10,7 @@
 #include "fixed-length-accumulator.h"
 
 #include "http-handler.h"
+#include "xml-processor.h"
 
 enum elexon_state
 {
@@ -33,6 +34,7 @@ static FixedLengthAccumulator s_xml_accumulator(s_xml_buffer, MAX_XML_SIZE);
 static bool s_download_flag = false;
 
 static ELEXON_STATE s_state = STATE_INIT;
+static XMLProcessor s_processor;
 
 static void print_key()
 {
@@ -84,6 +86,7 @@ void elexon_loop()
     case STATE_DOWNLOADING:
         if (handle_get_stream(s_xml_accumulator))
         {
+            s_processor.process(s_xml_accumulator.c_str(), s_xml_accumulator.length());
             s_state = STATE_DOWNLOADED;
         }
         break;
@@ -115,7 +118,10 @@ void elexon_print()
 {
     if (s_state == STATE_DOWNLOADED)
     {
-        Serial.println(s_xml_accumulator.c_str());
+        Serial.print("Latest time: ");
+        Serial.println(s_processor.time());
+        Serial.print("Total generation: ");
+        Serial.println(s_processor.total());
     }
 }
 
