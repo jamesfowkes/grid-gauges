@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"CPP",
+				"CPPUNIT_ASSERT_EQUAL"
+			],
+			[
+				"m_fuel",
+				"m_fuel_type_count"
+			],
+			[
+				"process",
+				"processor"
+			],
+			[
 				"ADD",
 				"ADDRESS_TYPE_MODULE"
 			],
@@ -138,10 +150,6 @@
 			[
 				"CPPUNIT",
 				"CPPUNIT_TEST"
-			],
-			[
-				"CPP",
-				"CPPUNIT_TEST_SUITE"
 			],
 			[
 				"rgb",
@@ -506,19 +514,29 @@
 			[
 				"cate",
 				"category"
-			],
-			[
-				"Cou",
-				"CoursePending"
-			],
-			[
-				"exi",
-				"existing_category"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "xml-processor.cpp",
+			"settings":
+			{
+				"buffer_size": 9092,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "xml-processor.h",
+			"settings":
+			{
+				"buffer_size": 526,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -558,6 +576,10 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/jfowkes/Documents/code/grid-gauges"
+	],
 	"file_history":
 	[
 		"/home/james/Arduino/libraries/WIFIMANAGER-ESP32-master/WiFiManager.cpp",
@@ -728,6 +750,18 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"get_fuel_percent",
+			"00",
+			"get_fuel_generation",
+			"CPPUNIT_ASSERT_EQUAL",
+			"        \"",
+			"\"",
+			"TYPE",
+			"<FUEL",
+			"p_XML_end",
+			"VAL",
+			"FUEL TYPE",
+			"TYPE",
 			"HTTP_HEAD",
 			"max",
 			"rollover",
@@ -843,19 +877,7 @@
 			"s_eeprom_next_address",
 			"board_sources",
 			"adl-logging",
-			"get_sources",
-			"write_sources",
-			"library_includes",
-			"LocalSource",
-			"nonvolatile",
-			"nv-eeprom",
-			"pullup",
-			";",
-			"target_file",
-			"render_board",
-			".code",
-			"sketch_name",
-			"write_sketch_to_directory"
+			"get_sources"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -889,14 +911,74 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "xml-processor.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9092,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1716,
+								1716
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 902.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "xml-processor.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								299,
+								263
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 22.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -945,7 +1027,7 @@
 	"project": "grid-gauges.sublime-project",
 	"replace":
 	{
-		"height": 40.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
