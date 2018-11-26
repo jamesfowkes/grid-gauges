@@ -4,6 +4,7 @@
 #include "user-input.h"
 #include "serial-handler.h"
 #include "elexon.h"
+#include "ntp.h"
 
 void setup()
 {
@@ -11,6 +12,7 @@ void setup()
 
   app_wifi_setup();
   user_input_setup();
+  ntp_setup();
   elexon_setup();
 }
 
@@ -18,6 +20,9 @@ void loop()
 {
   user_input_loop();
   serial_loop();
+  ntp_loop();
+  elexon_loop();
+  
   if (user_input_check_and_clear())
   {
     Serial.println("Clearing WiFi credentials");

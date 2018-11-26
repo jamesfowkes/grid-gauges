@@ -6,10 +6,17 @@
 
 static void handle_complete_buffer(FixedLengthAccumulator& buffer)
 {
-    char * command = buffer.c_str();
-    if (buffer.strncmp("APIKEY:",7) == 0)
+    if (buffer.strncmp("APIKEY:", 7) == 0)
     {
         elexon_set_api_key(buffer.c_str()+7);
+    }
+    else if (buffer.strncmp("FORCE_DOWNLOAD", 14) == 0)
+    {
+        elexon_download();
+    }
+    else if (buffer.strncmp("PRINT_LATEST", 12) == 0)
+    {
+        elexon_print();
     }
 }
 
@@ -29,6 +36,7 @@ void serial_loop()
         else
         {
             handle_complete_buffer(s_in_buffer);
+            s_in_buffer.reset();
         }
     }
 }
