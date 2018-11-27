@@ -121,7 +121,20 @@ void elexon_print()
         Serial.print("Latest time: ");
         Serial.println(s_processor.time());
         Serial.print("Total generation: ");
-        Serial.println(s_processor.total());
+        Serial.print(s_processor.total());
+        Serial.println("MW");
+        Serial.print("Got ");
+        Serial.print(s_processor.fuel_type_count());
+        Serial.println(" fuel types:");
+        for (uint8_t i=0; i<s_processor.fuel_type_count(); i++)
+        {
+            Serial.print(s_processor.get_fuel_type(i));
+            Serial.print(": ");
+            Serial.print(s_processor.get_fuel_generation(i));
+            Serial.print("MW (");
+            Serial.print(s_processor.get_fuel_percent(i));
+            Serial.println("%)");
+        }
     }
 }
 
