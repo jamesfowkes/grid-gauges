@@ -18,7 +18,8 @@ char dbg_buf[16];
 
 #endif
 
-static char TEST_XML[] = "<GENERATION_BY_FUEL_TYPE_TABLE><INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\">"
+static char TEST_XML[] = "<?xml version=\"1.0\"?>\r"
+"<GENERATION_BY_FUEL_TYPE_TABLE><INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\">\r"
 "<FUEL TYPE=\"CCGT\" IC=\"N\" VAL=\"23105\" PCT=\"52.5\"/>"
 "<FUEL TYPE=\"OCGT\" IC=\"N\" VAL=\"0\" PCT=\"0.0\"/>"
 "<FUEL TYPE=\"OIL\" IC=\"N\" VAL=\"0\" PCT=\"0.0\"/>"
