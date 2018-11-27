@@ -3,6 +3,6 @@
 
 void http_handler_loop();
 bool http_start_download(char * url);
-bool handle_get_stream(FixedLengthAccumulator& dst);
+bool http_handle_get_stream(FixedLengthAccumulator& dst);
 
 #endif

@@ -84,7 +84,7 @@ void elexon_loop()
         }
         break;
     case STATE_DOWNLOADING:
-        if (handle_get_stream(s_xml_accumulator))
+        if (http_handle_get_stream(s_xml_accumulator))
         {
             s_processor.process(s_xml_accumulator.c_str(), s_xml_accumulator.length());
             s_state = STATE_DOWNLOADED;

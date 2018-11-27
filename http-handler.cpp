@@ -10,10 +10,11 @@
 #include "http-handler.h"
 
 static HTTPClient s_http_client;
+
 static uint16_t s_download_size = 0;
 static uint16_t s_download_count = 0;
 
-bool handle_get_stream(FixedLengthAccumulator& dst)
+bool http_handle_get_stream(FixedLengthAccumulator& dst)
 {
     WiFiClient * stream = s_http_client.getStreamPtr();
     bool done;
