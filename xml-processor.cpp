@@ -37,6 +37,42 @@ static char TEST_XML[] = "<?xml version=\"1.0\"?>\r"
 "<FUEL TYPE=\"INTNEM\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
 "</INST>";
 
+static bool parse_i32(char const * const numeric, int32_t& parsed, char** p_end)
+{
+    if (!numeric) { return false; }
+
+    char * p_local_end;
+    int32_t local = strtol(numeric, &p_local_end, 10);
+
+    if (p_local_end > numeric)
+    {
+        parsed = local;
+        if (p_end)
+        {
+            *p_end = p_local_end;
+        }
+    }
+    return (p_local_end > numeric);
+}
+
+static bool parse_float(char const * const numeric, float& parsed, char** p_end)
+{
+    if (!numeric) { return false; }
+
+    char * p_local_end;
+    float local = strtof(numeric, &p_local_end);
+
+    if (p_local_end > numeric)
+    {
+        parsed = local;
+        if (p_end)
+        {
+            *p_end = p_local_end;
+        }
+    }
+    return (p_local_end > numeric);
+}
+
 static char * find_string(char * haystack, char const * const needle, char * pEnd)
 {
     size_t needle_size = strlen(needle);
@@ -114,6 +150,8 @@ void XMLProcessor::process(char * xml, size_t length)
     copy_total(m_total, xml, p_XML_end);   
 
     char buffer[16];
+    int32_t i32Temp;
+    float fTemp;
 
     while (xml)
     {
@@ -124,11 +162,16 @@ void XMLProcessor::process(char * xml, size_t length)
             copy_attr("TYPE", m_fuel_types[m_fuel_type_count], xml, p_XML_end);
             
             copy_attr("VAL", buffer, xml, p_XML_end);
-            m_generation[m_fuel_type_count] = atoi(buffer);
+            if (parse_i32(buffer, i32Temp, NULL))
+            {
+                m_generation[m_fuel_type_count] = (uint32_t)i32Temp;
+            }
 
             copy_attr("PCT", buffer, xml, p_XML_end);
-            m_generation_pct[m_fuel_type_count] = (uint8_t)(atof(buffer) + 0.5f);
-
+            if (parse_float(buffer, fTemp, NULL))
+            {
+                m_generation_pct[m_fuel_type_count] = (uint8_t)(fTemp + 0.5f);   
+            }
             m_fuel_type_count++;
         }
     }
