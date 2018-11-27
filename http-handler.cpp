@@ -16,6 +16,9 @@ static uint16_t s_download_count = 0;
 
 bool http_handle_get_stream(FixedLengthAccumulator& dst)
 {
+    static unsigned long last_run = 0;
+    if (millis() == last_run) { return false; }
+
     WiFiClient * stream = s_http_client.getStreamPtr();
     bool done;
 
