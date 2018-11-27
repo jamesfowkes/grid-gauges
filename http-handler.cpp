@@ -37,7 +37,8 @@ bool http_handle_get_stream(FixedLengthAccumulator& dst)
     {
         s_download_count = 0;
         s_download_size = 0;
-        Serial.println("Done.");    
+        Serial.println("Done.");
+        s_http_client.end();
     }
 
     return done;
