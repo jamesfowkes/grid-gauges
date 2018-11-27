@@ -46,6 +46,7 @@ bool http_handle_get_stream(FixedLengthAccumulator& dst)
 bool http_start_download(char * url)
 {
     bool success = false;
+    s_http_client.setReuse(true);
     s_http_client.begin(url);
     int response = s_http_client.GET();
     Serial.println("Starting download...");
