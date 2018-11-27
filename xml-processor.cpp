@@ -4,9 +4,37 @@
 #include <stdio.h>
 #include "xml-processor.h"
 
+char dbg_buf[16];
+
 #ifdef UNIT_TEST
+
 #include <iostream>
+#define DBG(x) if (m_debug) { memcpy(dbg_buf, x, 15); dbg_buf[15] =  '\0'; std::cout << dbg_buf << std::endl; }
+
+#else
+
+#include <Arduino.h>
+#define DBG(x) if (m_debug) { memcpy(dbg_buf, x, 15); dbg_buf[15] =  '\0'; Serial.println(dbg_buf); }
+
 #endif
+
+static char TEST_XML[] = "<GENERATION_BY_FUEL_TYPE_TABLE><INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\">"
+"<FUEL TYPE=\"CCGT\" IC=\"N\" VAL=\"23105\" PCT=\"52.5\"/>"
+"<FUEL TYPE=\"OCGT\" IC=\"N\" VAL=\"0\" PCT=\"0.0\"/>"
+"<FUEL TYPE=\"OIL\" IC=\"N\" VAL=\"0\" PCT=\"0.0\"/>"
+"<FUEL TYPE=\"COAL\" IC=\"N\" VAL=\"7356\" PCT=\"16.7\"/>"
+"<FUEL TYPE=\"NUCLEAR\" IC=\"N\" VAL=\"6975\" PCT=\"15.8\"/>"
+"<FUEL TYPE=\"WIND\" IC=\"N\" VAL=\"2338\" PCT=\"5.3\"/>"
+"<FUEL TYPE=\"PS\" IC=\"N\" VAL=\"1055\" PCT=\"2.4\"/>"
+"<FUEL TYPE=\"NPSHYD\" IC=\"N\" VAL=\"581\" PCT=\"1.3\"/>"
+"<FUEL TYPE=\"OTHER\" IC=\"N\" VAL=\"72\" PCT=\"0.2\"/>"
+"<FUEL TYPE=\"INTFR\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
+"<FUEL TYPE=\"INTIRL\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
+"<FUEL TYPE=\"INTNED\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
+"<FUEL TYPE=\"INTEW\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
+"<FUEL TYPE=\"BIOMASS\" IC=\"N\" VAL=\"2563\" PCT=\"5.8\"/>"
+"<FUEL TYPE=\"INTNEM\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
+"</INST>";
 
 static char * find_string(char * haystack, char const * const needle, char * pEnd)
 {
@@ -28,8 +56,7 @@ static char * find_string_after(char * haystack, char const * const needle, char
 static void copy_quoted_string(char * dst, char * start)
 {
     char * end = strchr(start, '\"');
-    
-    if (end>dst)
+    if (end>start)
     {
         size_t length = end-start;
         memcpy(dst, start, length);
@@ -61,6 +88,7 @@ static void copy_total(char * dst, char * xml, char * end)
 XMLProcessor::XMLProcessor()
 {
     this->reset();
+    m_debug = false;
 }
 
 void XMLProcessor::reset()
@@ -75,13 +103,14 @@ void XMLProcessor::reset()
 void XMLProcessor::process(char * xml, size_t length)
 {
     this->reset();
-    
+     
     char * p_XML_end = xml + length - 1;
-    char * p_inst_end = find_string(xml, "</INST>", p_XML_end);
 
     xml = find_string(xml, "<INST ", p_XML_end);
+    DBG(xml);
+
     copy_time(m_time, xml, p_XML_end);
-    copy_total(m_total, xml, p_XML_end);
+    copy_total(m_total, xml, p_XML_end);   
 
     char buffer[16];
 
@@ -90,14 +119,25 @@ void XMLProcessor::process(char * xml, size_t length)
         xml = find_string_after(xml, "<FUEL ", p_XML_end);
         if (xml)
         {
+            DBG(xml);
             copy_attr("TYPE", m_fuel_types[m_fuel_type_count], xml, p_XML_end);
+            
             copy_attr("VAL", buffer, xml, p_XML_end);
             m_generation[m_fuel_type_count] = atoi(buffer);
+
             copy_attr("PCT", buffer, xml, p_XML_end);
             m_generation_pct[m_fuel_type_count] = (uint8_t)(atof(buffer) + 0.5f);
+
             m_fuel_type_count++;
         }
     }
+}
+
+void XMLProcessor::test(bool debug)
+{
+    this->m_debug = debug;
+    this->process(TEST_XML, strlen(TEST_XML));
+    this->m_debug = false;
 }
 
 char const * XMLProcessor::time()
@@ -139,50 +179,27 @@ uint8_t XMLProcessor::get_fuel_percent(uint8_t i)
 class XMLProcessorTest : public CppUnit::TestFixture  {
 
     CPPUNIT_TEST_SUITE(XMLProcessorTest);
-    CPPUNIT_TEST(test_time_processing);
-    CPPUNIT_TEST(test_total_processing);
-    CPPUNIT_TEST(test_fuel_processing);
+
+    CPPUNIT_TEST(test_copy_time);
+    CPPUNIT_TEST(test_processing);
 
     CPPUNIT_TEST_SUITE_END();
 
-    void test_time_processing()
+    void test_copy_time()
     {
-        char xml[] = "<GENERATION_BY_FUEL_TYPE_TABLE><INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\"></INST>";
+        char actual[32];
+        char source[] = "<INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\">";
+        copy_time(actual, source, source+strlen(source));
+        CPPUNIT_ASSERT_EQUAL(std::string("2018-11-25 21:40:00"), std::string(actual));
+    }
+
+    void test_processing()
+    {
         XMLProcessor processor;
-        processor.process(xml, strlen(xml));
+        processor.test(true);
+
         CPPUNIT_ASSERT_EQUAL(std::string("2018-11-25 21:40:00"), std::string(processor.time()));
-    }
-
-    void test_total_processing()
-    {
-        char xml[] = "<GENERATION_BY_FUEL_TYPE_TABLE><INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\"></INST>";
-        XMLProcessor processor;
-        processor.process(xml, strlen(xml));
         CPPUNIT_ASSERT_EQUAL(std::string("34223"), std::string(processor.total()));
-    }
-
-    void test_fuel_processing()
-    {
-        char xml[] = "<GENERATION_BY_FUEL_TYPE_TABLE><INST AT=\"2018-11-25 21:40:00\" TOTAL=\"34223\">"
-        "<FUEL TYPE=\"CCGT\" IC=\"N\" VAL=\"23105\" PCT=\"52.5\"/>"
-        "<FUEL TYPE=\"OCGT\" IC=\"N\" VAL=\"0\" PCT=\"0.0\"/>"
-        "<FUEL TYPE=\"OIL\" IC=\"N\" VAL=\"0\" PCT=\"0.0\"/>"
-        "<FUEL TYPE=\"COAL\" IC=\"N\" VAL=\"7356\" PCT=\"16.7\"/>"
-        "<FUEL TYPE=\"NUCLEAR\" IC=\"N\" VAL=\"6975\" PCT=\"15.8\"/>"
-        "<FUEL TYPE=\"WIND\" IC=\"N\" VAL=\"2338\" PCT=\"5.3\"/>"
-        "<FUEL TYPE=\"PS\" IC=\"N\" VAL=\"1055\" PCT=\"2.4\"/>"
-        "<FUEL TYPE=\"NPSHYD\" IC=\"N\" VAL=\"581\" PCT=\"1.3\"/>"
-        "<FUEL TYPE=\"OTHER\" IC=\"N\" VAL=\"72\" PCT=\"0.2\"/>"
-        "<FUEL TYPE=\"INTFR\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
-        "<FUEL TYPE=\"INTIRL\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
-        "<FUEL TYPE=\"INTNED\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
-        "<FUEL TYPE=\"INTEW\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
-        "<FUEL TYPE=\"BIOMASS\" IC=\"N\" VAL=\"2563\" PCT=\"5.8\"/>"
-        "<FUEL TYPE=\"INTNEM\" IC=\"Y\" VAL=\"0\" PCT=\"0.0\"/>"
-        "</INST>";
-
-        XMLProcessor processor;
-        processor.process(xml, strlen(xml));
 
         CPPUNIT_ASSERT_EQUAL(15, (int)processor.fuel_type_count());
 
