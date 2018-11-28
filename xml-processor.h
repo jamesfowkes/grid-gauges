@@ -6,7 +6,7 @@ class XMLProcessor
 public:
     XMLProcessor();
 
-    void process(char * xml, size_t length);
+    void process(char const * xml, size_t length, bool debug);
     char const * time();
     char const * total();
     uint8_t fuel_type_count();

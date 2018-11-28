@@ -1,5 +1,6 @@
 #include <Esp.h>
 #include <TaskAction.h>
+#include <esp_system.h>
 
 #include "app-wifi.h"
 #include "user-input.h"
@@ -8,6 +9,8 @@
 #include "ntp.h"
 #include "xml-processor.h"
 
+static hw_timer_t *timer = NULL;
+
 static void led_task_fn(TaskAction* pTask)
 {
     (void)pTask;
@@ -15,6 +18,10 @@ static void led_task_fn(TaskAction* pTask)
     digitalWrite(5, s_led = !s_led);
 }
 static TaskAction s_led_task(led_task_fn, 500, INFINITE_TICKS);
+
+void IRAM_ATTR resetModule() {
+    esp_restart();
+}
 
 void setup()
 {
@@ -28,24 +35,10 @@ void setup()
     ntp_setup();
     elexon_setup();
 
-    processor.test(false);
-    Serial.print("Latest time: ");
-    Serial.println(processor.time());
-    Serial.print("Total generation: ");
-    Serial.print(processor.total());
-    Serial.println("MW");
-    Serial.print("Got ");
-    Serial.print(processor.fuel_type_count());
-    Serial.println(" fuel types:");
-    for (uint8_t i=0; i<processor.fuel_type_count(); i++)
-    {
-        Serial.print(processor.get_fuel_type(i));
-        Serial.print(": ");
-        Serial.print(processor.get_fuel_generation(i));
-        Serial.print("MW (");
-        Serial.print(processor.get_fuel_percent(i));
-        Serial.println("%)");
-    }
+    timer = timerBegin(0, 80, true);
+    timerAttachInterrupt(timer, &resetModule, true);
+    timerAlarmWrite(timer, 5000 * 1000, false);
+    timerAlarmEnable(timer);
 }
 
 void loop()
@@ -66,5 +59,7 @@ void loop()
     }
 
     s_led_task.tick();
+
+    timerWrite(timer, 0);
 }
 

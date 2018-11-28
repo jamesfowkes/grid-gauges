@@ -86,7 +86,19 @@ void elexon_loop()
     case STATE_DOWNLOADING:
         if (http_handle_get_stream(s_xml_accumulator))
         {
-            s_processor.process(s_xml_accumulator.c_str(), s_xml_accumulator.length());
+            char * s = s_xml_accumulator.c_str();
+            Serial.println("Accumulator: ");
+            Serial.print(s_xml_accumulator.length());
+            Serial.println(" bytes");
+            for (uint16_t i = 0; i < s_xml_accumulator.length(); i++)
+            {
+                Serial.print(s[i]);
+                if (i % 32)
+                {
+                    Serial.flush();
+                }
+            }
+            s_processor.process(s_xml_accumulator.c_str(), s_xml_accumulator.length(), true);
             s_state = STATE_DOWNLOADED;
         }
         break;
