@@ -120,6 +120,9 @@ void XMLParser::reset()
 
 void XMLParser::parse(char const * const xml_start, size_t length, bool debug)
 {
+    char buffer[16];
+    int32_t i32Temp;
+
     this->reset();
     this->m_debug = debug;
 
@@ -130,10 +133,13 @@ void XMLParser::parse(char const * const xml_start, size_t length, bool debug)
     DBG(xml);
 
     copy_time(m_time, xml, xml_end);
-    copy_total(m_total, xml, xml_end);   
+    copy_total(buffer, xml, xml_end);   
 
-    char buffer[16];
-    int32_t i32Temp;
+    if(parse_i32(buffer, i32Temp, NULL))
+    {
+        m_total = i32Temp;
+    }
+    
     float fTemp;
 
     while (xml)
@@ -165,7 +171,7 @@ char const * XMLParser::time()
     return m_time;
 }
 
-char const * XMLParser::total()
+uint32_t XMLParser::total()
 {
     return m_total;
 }
@@ -226,7 +232,7 @@ class XMLParserTest : public CppUnit::TestFixture  {
         parser.parse(pXML, strlen(pXML), false);
 
         CPPUNIT_ASSERT_EQUAL(std::string("2018-11-27 06:20:00"), std::string(parser.time()));
-        CPPUNIT_ASSERT_EQUAL(std::string("33962"), std::string(parser.total()));
+        CPPUNIT_ASSERT_EQUAL(33962U, parser.total());
 
         CPPUNIT_ASSERT_EQUAL(15, (int)parser.fuel_type_count());
 

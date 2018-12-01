@@ -8,7 +8,7 @@ public:
 
     void parse(char const * xml, size_t length, bool debug);
     char const * time();
-    char const * total();
+    uint32_t total();
     uint8_t fuel_type_count();
     char * get_fuel_type(uint8_t i);
     uint32_t get_fuel_generation(uint8_t i);
@@ -18,7 +18,7 @@ public:
 private:
     void reset();
     char m_time[32] = "";
-    char m_total[16] = "";
+    uint32_t m_total = 0;
     char m_fuel_types[32][12];
     uint32_t m_generation[32] = {0};
     uint8_t m_generation_pct[32] = {0};
