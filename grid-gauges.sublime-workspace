@@ -4,16 +4,80 @@
 		"selected_items":
 		[
 			[
-				"CPP",
-				"CPPUNIT_ASSERT_EQUAL"
+				"pro",
+				"process"
 			],
 			[
-				"m_fuel",
-				"m_fuel_type_count"
+				"test",
+				"test_file"
 			],
 			[
-				"process",
-				"processor"
+				"debu",
+				"debug_buffer"
+			],
+			[
+				"digitl",
+				"digitalWrite\tArduino digitalWrite"
+			],
+			[
+				"s_pr",
+				"s_processor"
+			],
+			[
+				"s_t",
+				"s_time"
+			],
+			[
+				"copy_",
+				"copy_quoted_string"
+			],
+			[
+				"s_down",
+				"s_download_size"
+			],
+			[
+				"sdo",
+				"s_download_count"
+			],
+			[
+				"STATE",
+				"STATE_DOWNLOADING"
+			],
+			[
+				"s_le",
+				"s_download_size"
+			],
+			[
+				"STATE_DO",
+				"STATE_DOWNLOADED"
+			],
+			[
+				"s_",
+				"s_latest_xml"
+			],
+			[
+				"hand",
+				"handle_get_stream"
+			],
+			[
+				"htt",
+				"httpCode"
+			],
+			[
+				"s_nt",
+				"s_ntp_time_ok"
+			],
+			[
+				"ntp",
+				"ntp_debug_task_fn"
+			],
+			[
+				"ke",
+				"key_size"
+			],
+			[
+				"s_in",
+				"s_in_buffer"
 			],
 			[
 				"ADD",
@@ -38,10 +102,6 @@
 			[
 				"CPPUN",
 				"CPPUNIT_ASSERT_EQUAL"
-			],
-			[
-				"s_",
-				"s_mock_param1"
 			],
 			[
 				"new",
@@ -152,6 +212,10 @@
 				"CPPUNIT_TEST"
 			],
 			[
+				"CPP",
+				"CPPUNIT_TEST_SUITE"
+			],
+			[
 				"rgb",
 				"rgb_string"
 			],
@@ -256,10 +320,6 @@
 				"input_file_path"
 			],
 			[
-				"pro",
-				"protocol_dir"
-			],
-			[
 				"command",
 				"command_length"
 			],
@@ -274,10 +334,6 @@
 			[
 				"ad",
 				"ads_type"
-			],
-			[
-				"STATE",
-				"STATE_ON"
 			],
 			[
 				"s_st",
@@ -412,10 +468,6 @@
 				"TuitionFeePending"
 			],
 			[
-				"test",
-				"test_university_data"
-			],
-			[
 				"Univ",
 				"UniversityPendingCourse"
 			],
@@ -462,79 +514,70 @@
 			[
 				"trans",
 				"translations_obj"
-			],
-			[
-				"pe",
-				"pending_admissions"
-			],
-			[
-				"univ",
-				"university_name"
-			],
-			[
-				"tran",
-				"translatables"
-			],
-			[
-				"aa",
-				"assert_equals"
-			],
-			[
-				"lang",
-				"language"
-			],
-			[
-				"cour",
-				"course_name_translation"
-			],
-			[
-				"courses",
-				"courses"
-			],
-			[
-				"Cate",
-				"CategoryPending"
-			],
-			[
-				"CAt",
-				"CategoryPendingCourses"
-			],
-			[
-				"category",
-				"category_name"
-			],
-			[
-				"add",
-				"add_course"
-			],
-			[
-				"cou",
-				"course_names"
-			],
-			[
-				"cate",
-				"category"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "xml-processor.cpp",
-			"settings":
-			{
-				"buffer_size": 9092,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "xml-processor.h",
 			"settings":
 			{
-				"buffer_size": 526,
+				"buffer_size": 651,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "xml-processor.cpp",
+			"settings":
+			{
+				"buffer_size": 9403,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "serial-handler.cpp",
+			"settings":
+			{
+				"buffer_size": 838,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "elexon.cpp",
+			"settings":
+			{
+				"buffer_size": 3518,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "http-handler.cpp",
+			"settings":
+			{
+				"buffer_size": 2147,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "grid-gauges.ino",
+			"settings":
+			{
+				"buffer_size": 1234,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 974,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -578,10 +621,32 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/jfowkes/Documents/code/grid-gauges"
+		"/home/james/code/grid-gauges"
 	],
 	"file_history":
 	[
+		"/home/james/code/grid-gauges/test.xml",
+		"/home/james/code/grid-gauges/latest.xml",
+		"/home/james/code/grid-gauges/xml-processor.cpp",
+		"/home/james/code/grid-gauges/grid-gauges.ino",
+		"/home/james/code/grid-gauges/elexon.cpp",
+		"/home/james/code/grid-gauges/elexon.h",
+		"/home/james/code/grid-gauges/http-handler.h",
+		"/home/james/code/grid-gauges/http-handler.cpp",
+		"/home/james/code/grid-gauges/xml-processor.h",
+		"/home/james/code/Libs/Format/Tests/Format/format.test.cpp",
+		"/home/james/code/grid-gauges/ntp.cpp",
+		"/home/james/code/grid-gauges/serial-handler.cpp",
+		"/home/james/Arduino/libraries/FixedLengthAccumulator/fixed-length-accumulator.h",
+		"/home/james/Arduino/libraries/FixedLengthAccumulator/fixed-length-accumulator.cpp",
+		"/home/james/code/grid-gauges/serial.cpp",
+		"/home/james/code/grid-gauges/user-input.cpp",
+		"/home/james/code/grid-gauges/user-input.h",
+		"/home/james/code/grid-gauges/ntp.h",
+		"/home/james/code/grid-gauges/app-wifi.h",
+		"/home/james/code/grid-gauges/serial-handler.h",
+		"/home/james/code/grid-gauges/app-wifi.cpp",
+		"/home/james/code/Libs/utility/util_sequence_generator.h",
 		"/home/james/Arduino/libraries/WIFIMANAGER-ESP32-master/WiFiManager.cpp",
 		"/home/james/Arduino/libraries/WIFIMANAGER-ESP32-master/WiFiManager.h",
 		"/home/james/code/adl/adl/adl_code/adl.h",
@@ -687,29 +752,7 @@
 		"/home/james/code/adl/adl/parameters/parameter.h",
 		"/home/james/code/adl/adl/unittest/adl-mock-device.cpp",
 		"/home/james/code/adl/adl/unittest/Arduino.h",
-		"/home/james/code/adl/adl/adl_code/protocols/url/unittest/makefile",
-		"/home/james/code/adl/adl/adl_code/adl-nv.h",
-		"/home/james/code/adl/adl/boards/nonvolatile/EEPROM/adl-nv-eeprom.cpp",
-		"/home/james/code/adl/adl/adl_code/unittest/mock/adl-mocker.cpp",
-		"/home/james/code/adl/adl/adl_code/unittest/adl-defs.h",
-		"/home/james/code/adl/adl/devices/potential-divider.device-plugin/potential-divider.h",
-		"/home/james/code/adl/adl/devices/potential-divider.device-plugin/potential-divider.cpp",
-		"/home/james/code/adl/adl/modules/oneshot_timer/example.xml",
-		"/home/james/code/cryptology/cryptology-justright/app.xml",
-		"/home/james/code/adl/adl/devices/analog-input.device-plugin/example.xml",
-		"/home/james/code/adl/adl/devices/thermistor.device-plugin/thermistor.h",
-		"/home/james/code/adl/adl/devices/thermistor.device-plugin/example.xml",
-		"/home/james/test.py",
-		"/home/james/code/adl/adl/devices/thermistor.device-plugin/thermistor.py",
-		"/home/james/code/adl/adl/devices/thermistor.device-plugin/thermistor.yapsy-plugin",
-		"/home/james/code/adl/adl/boards/nonvolatile/EEPROM/EEPROM.py",
-		"/home/james/code/adl/adl/boards/generic_board.py",
-		"/home/james/code/adl/adl/devices/generic_device.py",
-		"/home/james/code/adl/adl/parameters/generic_parameter.py",
-		"/home/james/code/adl/adl/boards/uno.yapsy-plugin",
-		"/home/james/code/adl/adl/modules/generic_module.py",
-		"/home/james/code/adl/adl/boards/__init__.py",
-		"/home/james/code/adl/adl/devices/adafruit-ads1x15.device-plugin/adafruit_ads1x15.py"
+		"/home/james/code/adl/adl/adl_code/protocols/url/unittest/makefile"
 	],
 	"find":
 	{
@@ -751,17 +794,70 @@
 		"find_history":
 		[
 			"get_fuel_percent",
-			"00",
-			"get_fuel_generation",
-			"CPPUNIT_ASSERT_EQUAL",
-			"        \"",
-			"\"",
-			"TYPE",
-			"<FUEL",
 			"p_XML_end",
-			"VAL",
-			"FUEL TYPE",
-			"TYPE",
+			"xml",
+			"char * haystack",
+			"char * pEnd",
+			"char * end",
+			"* xml",
+			"myfile",
+			"</FUEL>",
+			"><",
+			"length",
+			"process",
+			"s_processor",
+			"process",
+			"copy_time",
+			"debug_buffer",
+			"DBG",
+			"copy_time",
+			"m_debug",
+			"test_xml",
+			"s_processor",
+			"xml",
+			"handle_get_stream",
+			"begin",
+			"cout",
+			"m_inst_generation_start",
+			"FormatTest",
+			"s_download_state_task",
+			"download_state_task_fn",
+			"time",
+			"handle_get_stream",
+			"static",
+			"    copy_",
+			"copy_",
+			"time",
+			"xml",
+			"pXML_end",
+			"pFuel_type",
+			"pInst_end",
+			"p_XML_end",
+			"pEnd",
+			"HTTPClient",
+			"s_http_client",
+			"http_client",
+			"STATE_DOWNLOADING",
+			"s_download_state_task_fn",
+			"ntp_",
+			"len",
+			"handle_get_stream",
+			"s_latest_xml",
+			"download_xml",
+			"elexon_download",
+			"elexon_print",
+			"start_download",
+			"key",
+			"elexon_set_api_key",
+			"httpCode",
+			"XML_URL",
+			"s_ntpUDP",
+			"s_timeClient",
+			"timeClient",
+			"api_key",
+			"buffer.c_str()",
+			"UserInput",
+			"AppWifi",
 			"HTTP_HEAD",
 			"max",
 			"rollover",
@@ -824,60 +920,7 @@
 			"x",
 			"i",
 			"s_TLC5973",
-			"[0",
-			"2",
-			"strip",
-			"adl_custom_setup",
-			"m_numWords",
-			"mp_pixels",
-			"m_pixels",
-			"pixels",
-			"* ",
-			"[0]",
-			"[",
-			"(n",
-			"set_pixels",
-			"Loaded",
-			"m_value",
-			"Loaded",
-			"//",
-			"s_adl_log_module_prefixes",
-			"adl_board_read_progmem",
-			"logln",
-			"log",
-			"delay_start_time",
-			"log",
-			"LOG_ADL",
-			"logln",
-			"testIntegerParameterCorrectlyWorksWithNonvolatile",
-			"uint",
-			"IntegerParam(",
-			"write",
-			"testIntegerParameterResetsToResetValue",
-			"device",
-			"save",
-			"adl_get_param_cmd_handler",
-			"byte",
-			"eeprom",
-			"adl_nv_alloc",
-			"MockDevice",
-			"log_",
-			"taskaction",
-			"you",
-			"LOG_ADL",
-			"adl_get_device_cmd_handler",
-			"ADL_BOARD_ADDRESS",
-			"command_handler",
-			"ADDRESS_TYPE_DEVICE",
-			".process",
-			"process",
-			"get_sources",
-			"GenericModule",
-			"get_sources",
-			"s_eeprom_next_address",
-			"board_sources",
-			"adl-logging",
-			"get_sources"
+			"[0"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -911,66 +954,235 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 6,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "xml-processor.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9092,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1716,
-								1716
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 902.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "xml-processor.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 526,
+						"buffer_size": 651,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								299,
-								263
+								257,
+								257
 							]
 						],
 						"settings":
 						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
 							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "xml-processor.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9403,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8561,
+								8561
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3079.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "serial-handler.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 838,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "elexon.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3518,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2203,
+								2203
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 78.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "http-handler.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2147,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								914,
+								914
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 585.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "grid-gauges.ino",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1234,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								835,
+								835
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 273.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 974,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								306,
+								306
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -978,7 +1190,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 24.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -1027,7 +1239,7 @@
 	"project": "grid-gauges.sublime-project",
 	"replace":
 	{
-		"height": 44.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1581,7 +1793,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 366.0,
+	"side_bar_width": 281.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

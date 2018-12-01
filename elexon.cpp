@@ -10,7 +10,7 @@
 #include "fixed-length-accumulator.h"
 
 #include "http-handler.h"
-#include "xml-processor.h"
+#include "xml-parser.h"
 
 enum elexon_state
 {
@@ -34,7 +34,7 @@ static FixedLengthAccumulator s_xml_accumulator(s_xml_buffer, MAX_XML_SIZE);
 static bool s_download_flag = false;
 
 static ELEXON_STATE s_state = STATE_INIT;
-static XMLProcessor s_processor;
+static XMLParser s_parser;
 
 static void print_key()
 {
@@ -98,7 +98,7 @@ void elexon_loop()
                     Serial.flush();
                 }
             }
-            s_processor.process(s_xml_accumulator.c_str(), s_xml_accumulator.length(), true);
+            s_parser.parse(s_xml_accumulator.c_str(), s_xml_accumulator.length(), true);
             s_state = STATE_DOWNLOADED;
         }
         break;
@@ -131,20 +131,20 @@ void elexon_print()
     if (s_state == STATE_DOWNLOADED)
     {
         Serial.print("Latest time: ");
-        Serial.println(s_processor.time());
+        Serial.println(s_parser.time());
         Serial.print("Total generation: ");
-        Serial.print(s_processor.total());
+        Serial.print(s_parser.total());
         Serial.println("MW");
         Serial.print("Got ");
-        Serial.print(s_processor.fuel_type_count());
+        Serial.print(s_parser.fuel_type_count());
         Serial.println(" fuel types:");
-        for (uint8_t i=0; i<s_processor.fuel_type_count(); i++)
+        for (uint8_t i=0; i<s_parser.fuel_type_count(); i++)
         {
-            Serial.print(s_processor.get_fuel_type(i));
+            Serial.print(s_parser.get_fuel_type(i));
             Serial.print(": ");
-            Serial.print(s_processor.get_fuel_generation(i));
+            Serial.print(s_parser.get_fuel_generation(i));
             Serial.print("MW (");
-            Serial.print(s_processor.get_fuel_percent(i));
+            Serial.print(s_parser.get_fuel_percent(i));
             Serial.println("%)");
         }
     }

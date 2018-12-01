@@ -7,7 +7,7 @@
 #include "serial-handler.h"
 #include "elexon.h"
 #include "ntp.h"
-#include "xml-processor.h"
+#include "xml-parser.h"
 
 static hw_timer_t *timer = NULL;
 
@@ -25,7 +25,6 @@ void IRAM_ATTR resetModule() {
 
 void setup()
 {
-    XMLProcessor processor;
     Serial.begin(115200);
 
     pinMode(5, OUTPUT);

@@ -1,12 +1,12 @@
-#ifndef _XML_PROCESSOR_H_
-#define _XML_PROCESSOR_H_
+#ifndef _XML_PARSER_H_
+#define _XML_PARSER_H_
 
-class XMLProcessor
+class XMLParser
 {
 public:
-    XMLProcessor();
+    XMLParser();
 
-    void process(char const * xml, size_t length, bool debug);
+    void parse(char const * xml, size_t length, bool debug);
     char const * time();
     char const * total();
     uint8_t fuel_type_count();

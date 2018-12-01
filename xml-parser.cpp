@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "xml-processor.h"
+#include "xml-parser.h"
 
 char dbg_buf[16];
 
@@ -103,13 +103,13 @@ static void copy_total(char * dst, char const * const xml, char const * const en
     copy_attr("TOTAL", dst, xml, end);
 }
 
-XMLProcessor::XMLProcessor()
+XMLParser::XMLParser()
 {
     this->reset();
     m_debug = false;
 }
 
-void XMLProcessor::reset()
+void XMLParser::reset()
 {
     for (uint8_t i=0; i<32; i++)
     {
@@ -118,7 +118,7 @@ void XMLProcessor::reset()
     m_fuel_type_count = 0;
 }
 
-void XMLProcessor::process(char const * const xml_start, size_t length, bool debug)
+void XMLParser::parse(char const * const xml_start, size_t length, bool debug)
 {
     this->reset();
     this->m_debug = debug;
@@ -160,32 +160,32 @@ void XMLProcessor::process(char const * const xml_start, size_t length, bool deb
     }
 }
 
-char const * XMLProcessor::time()
+char const * XMLParser::time()
 {
     return m_time;
 }
 
-char const * XMLProcessor::total()
+char const * XMLParser::total()
 {
     return m_total;
 }
 
-uint8_t XMLProcessor::fuel_type_count()
+uint8_t XMLParser::fuel_type_count()
 {
     return m_fuel_type_count;
 }
 
-char * XMLProcessor::get_fuel_type(uint8_t i)
+char * XMLParser::get_fuel_type(uint8_t i)
 {
     return m_fuel_types[i];
 }
 
-uint32_t XMLProcessor::get_fuel_generation(uint8_t i)
+uint32_t XMLParser::get_fuel_generation(uint8_t i)
 {
     return m_generation[i];
 }
 
-uint8_t XMLProcessor::get_fuel_percent(uint8_t i)
+uint8_t XMLParser::get_fuel_percent(uint8_t i)
 {
     return m_generation_pct[i];
 }
@@ -202,17 +202,17 @@ std::string slurp(std::ifstream& in) {
     return sstr.str();
 }
 
-class XMLProcessorTest : public CppUnit::TestFixture  {
+class XMLParserTest : public CppUnit::TestFixture  {
 
-    CPPUNIT_TEST_SUITE(XMLProcessorTest);
+    CPPUNIT_TEST_SUITE(XMLParserTest);
 
-    CPPUNIT_TEST(test_processing);
+    CPPUNIT_TEST(test_parsing);
 
     CPPUNIT_TEST_SUITE_END();
 
-    void test_processing()
+    void test_parsing()
     {
-        XMLProcessor processor;
+        XMLParser parser;
         char const * pXML;
         std::string xml_string;
         std::ifstream test_file ("test.xml");
@@ -223,72 +223,72 @@ class XMLProcessorTest : public CppUnit::TestFixture  {
         }
         test_file.close();
         
-        processor.process(pXML, strlen(pXML), false);
+        parser.parse(pXML, strlen(pXML), false);
 
-        CPPUNIT_ASSERT_EQUAL(std::string("2018-11-27 06:20:00"), std::string(processor.time()));
-        CPPUNIT_ASSERT_EQUAL(std::string("33962"), std::string(processor.total()));
+        CPPUNIT_ASSERT_EQUAL(std::string("2018-11-27 06:20:00"), std::string(parser.time()));
+        CPPUNIT_ASSERT_EQUAL(std::string("33962"), std::string(parser.total()));
 
-        CPPUNIT_ASSERT_EQUAL(15, (int)processor.fuel_type_count());
+        CPPUNIT_ASSERT_EQUAL(15, (int)parser.fuel_type_count());
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(0)), std::string("CCGT"));
-        CPPUNIT_ASSERT_EQUAL(14847U, processor.get_fuel_generation(0));
-        CPPUNIT_ASSERT_EQUAL(44U, (unsigned int)processor.get_fuel_percent(0));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(0)), std::string("CCGT"));
+        CPPUNIT_ASSERT_EQUAL(14847U, parser.get_fuel_generation(0));
+        CPPUNIT_ASSERT_EQUAL(44U, (unsigned int)parser.get_fuel_percent(0));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(1)), std::string("OCGT"));
-        CPPUNIT_ASSERT_EQUAL(0U, processor.get_fuel_generation(1));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(1));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(1)), std::string("OCGT"));
+        CPPUNIT_ASSERT_EQUAL(0U, parser.get_fuel_generation(1));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(1));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(2)), std::string("OIL"));
-        CPPUNIT_ASSERT_EQUAL(0U, processor.get_fuel_generation(2));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(2));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(2)), std::string("OIL"));
+        CPPUNIT_ASSERT_EQUAL(0U, parser.get_fuel_generation(2));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(2));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(3)), std::string("COAL"));
-        CPPUNIT_ASSERT_EQUAL(2514U, processor.get_fuel_generation(3));
-        CPPUNIT_ASSERT_EQUAL(7U, (unsigned int)processor.get_fuel_percent(3));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(3)), std::string("COAL"));
+        CPPUNIT_ASSERT_EQUAL(2514U, parser.get_fuel_generation(3));
+        CPPUNIT_ASSERT_EQUAL(7U, (unsigned int)parser.get_fuel_percent(3));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(4)), std::string("NUCLEAR"));
-        CPPUNIT_ASSERT_EQUAL(6344U, processor.get_fuel_generation(4));
-        CPPUNIT_ASSERT_EQUAL(19U, (unsigned int)processor.get_fuel_percent(4));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(4)), std::string("NUCLEAR"));
+        CPPUNIT_ASSERT_EQUAL(6344U, parser.get_fuel_generation(4));
+        CPPUNIT_ASSERT_EQUAL(19U, (unsigned int)parser.get_fuel_percent(4));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(5)), std::string("WIND"));
-        CPPUNIT_ASSERT_EQUAL(6675U, processor.get_fuel_generation(5));
-        CPPUNIT_ASSERT_EQUAL(20U, (unsigned int)processor.get_fuel_percent(5));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(5)), std::string("WIND"));
+        CPPUNIT_ASSERT_EQUAL(6675U, parser.get_fuel_generation(5));
+        CPPUNIT_ASSERT_EQUAL(20U, (unsigned int)parser.get_fuel_percent(5));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(6)), std::string("PS"));
-        CPPUNIT_ASSERT_EQUAL(0U, processor.get_fuel_generation(6));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(6));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(6)), std::string("PS"));
+        CPPUNIT_ASSERT_EQUAL(0U, parser.get_fuel_generation(6));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(6));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(7)), std::string("NPSHYD"));
-        CPPUNIT_ASSERT_EQUAL(353U, processor.get_fuel_generation(7));
-        CPPUNIT_ASSERT_EQUAL(1U, (unsigned int)processor.get_fuel_percent(7));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(7)), std::string("NPSHYD"));
+        CPPUNIT_ASSERT_EQUAL(353U, parser.get_fuel_generation(7));
+        CPPUNIT_ASSERT_EQUAL(1U, (unsigned int)parser.get_fuel_percent(7));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(8)), std::string("OTHER"));
-        CPPUNIT_ASSERT_EQUAL(27U, processor.get_fuel_generation(8));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(8));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(8)), std::string("OTHER"));
+        CPPUNIT_ASSERT_EQUAL(27U, parser.get_fuel_generation(8));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(8));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(9)), std::string("INTFR"));
-        CPPUNIT_ASSERT_EQUAL(0U, processor.get_fuel_generation(9));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(9));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(9)), std::string("INTFR"));
+        CPPUNIT_ASSERT_EQUAL(0U, parser.get_fuel_generation(9));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(9));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(10)), std::string("INTIRL"));
-        CPPUNIT_ASSERT_EQUAL(93U, processor.get_fuel_generation(10));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(10));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(10)), std::string("INTIRL"));
+        CPPUNIT_ASSERT_EQUAL(93U, parser.get_fuel_generation(10));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(10));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(11)), std::string("INTNED"));
-        CPPUNIT_ASSERT_EQUAL(0U, processor.get_fuel_generation(11));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(11));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(11)), std::string("INTNED"));
+        CPPUNIT_ASSERT_EQUAL(0U, parser.get_fuel_generation(11));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(11));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(12)), std::string("INTEW"));
-        CPPUNIT_ASSERT_EQUAL(504U, processor.get_fuel_generation(12));
-        CPPUNIT_ASSERT_EQUAL(2U, (unsigned int)processor.get_fuel_percent(12));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(12)), std::string("INTEW"));
+        CPPUNIT_ASSERT_EQUAL(504U, parser.get_fuel_generation(12));
+        CPPUNIT_ASSERT_EQUAL(2U, (unsigned int)parser.get_fuel_percent(12));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(13)), std::string("BIOMASS"));
-        CPPUNIT_ASSERT_EQUAL(2605U, processor.get_fuel_generation(13));
-        CPPUNIT_ASSERT_EQUAL(8U, (unsigned int)processor.get_fuel_percent(13));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(13)), std::string("BIOMASS"));
+        CPPUNIT_ASSERT_EQUAL(2605U, parser.get_fuel_generation(13));
+        CPPUNIT_ASSERT_EQUAL(8U, (unsigned int)parser.get_fuel_percent(13));
 
-        CPPUNIT_ASSERT_EQUAL(std::string(processor.get_fuel_type(14)), std::string("INTNEM"));
-        CPPUNIT_ASSERT_EQUAL(0U, processor.get_fuel_generation(14));
-        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)processor.get_fuel_percent(14));
+        CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(14)), std::string("INTNEM"));
+        CPPUNIT_ASSERT_EQUAL(0U, parser.get_fuel_generation(14));
+        CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(14));
 
     }
 
@@ -298,7 +298,7 @@ int main()
 {
    CppUnit::TextUi::TestRunner runner;
    
-   CPPUNIT_TEST_SUITE_REGISTRATION( XMLProcessorTest );
+   CPPUNIT_TEST_SUITE_REGISTRATION( XMLParserTest );
 
    CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
 
