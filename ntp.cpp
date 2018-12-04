@@ -29,3 +29,13 @@ void ntp_loop()
     s_ntp_time_ok = s_time_client.getEpochTime() > START_OF_2018_EPOCH_TIME;
     s_ntp_debug_task.tick();
 }
+
+unsigned long ntp_get_time()
+{
+	return s_time_client.getEpochTime();
+}
+
+bool ntp_got_valid_time()
+{
+	return s_ntp_time_ok;
+}
