@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "xml-parser.h"
 
 char dbg_buf[16];
@@ -52,6 +53,27 @@ static bool parse_float(char const * const numeric, float& parsed, char** p_end)
         }
     }
     return (p_local_end > numeric);
+}
+
+
+static bool parse_time(char const * const pTime, unsigned long& parsed, char** p_end)
+{
+    if (!pTime) { return false; }
+
+    char * p_local_end;
+    struct tm local_tm;
+    p_local_end = strptime(pTime, "%Y-%m-%d %T", &local_tm);
+    local_tm.tm_isdst = 0;
+    
+    if (p_local_end > pTime)
+    {
+        parsed = mktime(&local_tm);
+        if (p_end)
+        {
+            *p_end = p_local_end;
+        }
+    }
+    return (p_local_end > pTime);
 }
 
 static char const * find_string(char const * haystack, char const * const needle, char const * const pEnd)
@@ -120,8 +142,9 @@ void XMLParser::reset()
 
 void XMLParser::parse(char const * const xml_start, size_t length, bool debug)
 {
-    char buffer[16];
+    char buffer[32];
     int32_t i32Temp;
+    unsigned long ulTemp;
 
     this->reset();
     this->m_debug = debug;
@@ -132,7 +155,12 @@ void XMLParser::parse(char const * const xml_start, size_t length, bool debug)
     char const * xml_end = find_string(xml_start, "</INST>", p_XML_end);
     DBG(xml);
 
-    copy_time(m_time, xml, xml_end);
+    copy_time(buffer, xml, xml_end);
+    if(parse_time(buffer, ulTemp, NULL))
+    {
+        m_time = ulTemp;
+    }
+
     copy_total(buffer, xml, xml_end);   
 
     if(parse_i32(buffer, i32Temp, NULL))
@@ -166,7 +194,7 @@ void XMLParser::parse(char const * const xml_start, size_t length, bool debug)
     }
 }
 
-char const * XMLParser::time()
+unsigned long XMLParser::epoch_time()
 {
     return m_time;
 }
@@ -186,14 +214,33 @@ char * XMLParser::get_fuel_type(uint8_t i)
     return m_fuel_types[i];
 }
 
-int32_t XMLParser::get_fuel_generation(uint8_t i)
+int32_t XMLParser::get_fuel_generation(char const * const id)
 {
-    return m_generation[i];
+    uint8_t index = get_index_for_fuel(id);
+    return (index !=  INVALID_FUEL_TYPE) ? m_generation[index] : 0;
 }
 
 uint8_t XMLParser::get_fuel_percent(uint8_t i)
 {
     return m_generation_pct[i];
+}
+
+uint8_t XMLParser::get_index_for_fuel(char const * const id)
+{
+    uint8_t index = INVALID_FUEL_TYPE;
+    if (id)
+    {
+        index = 0;
+        while (index < m_fuel_type_count)
+        {
+            if (strcmp(m_fuel_types[index], id) == 0)
+            {
+                break;
+            }
+            index++;
+        }  
+    }
+    return index;
 }
 
 #ifdef UNIT_TEST
@@ -231,73 +278,73 @@ class XMLParserTest : public CppUnit::TestFixture  {
         
         parser.parse(pXML, strlen(pXML), false);
 
-        CPPUNIT_ASSERT_EQUAL(std::string("2018-11-27 06:20:00"), std::string(parser.time()));
+        //CPPUNIT_ASSERT_EQUAL(std::string("2018-11-27 06:20:00"), std::string(parser.epoch_time()));
+        CPPUNIT_ASSERT_EQUAL(1543299600UL, parser.epoch_time());
+        
         CPPUNIT_ASSERT_EQUAL(33962, parser.total());
 
         CPPUNIT_ASSERT_EQUAL(15, (int)parser.fuel_type_count());
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(0)), std::string("CCGT"));
-        CPPUNIT_ASSERT_EQUAL(14847, parser.get_fuel_generation(0));
+        CPPUNIT_ASSERT_EQUAL(14847, parser.get_fuel_generation("CCGT"));
         CPPUNIT_ASSERT_EQUAL(44U, (unsigned int)parser.get_fuel_percent(0));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(1)), std::string("OCGT"));
-        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation(1));
+        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation("OCGT"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(1));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(2)), std::string("OIL"));
-        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation(2));
+        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation("OIL"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(2));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(3)), std::string("COAL"));
-        CPPUNIT_ASSERT_EQUAL(2514, parser.get_fuel_generation(3));
+        CPPUNIT_ASSERT_EQUAL(2514, parser.get_fuel_generation("COAL"));
         CPPUNIT_ASSERT_EQUAL(7U, (unsigned int)parser.get_fuel_percent(3));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(4)), std::string("NUCLEAR"));
-        CPPUNIT_ASSERT_EQUAL(6344, parser.get_fuel_generation(4));
+        CPPUNIT_ASSERT_EQUAL(6344, parser.get_fuel_generation("NUCLEAR"));
         CPPUNIT_ASSERT_EQUAL(19U, (unsigned int)parser.get_fuel_percent(4));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(5)), std::string("WIND"));
-        CPPUNIT_ASSERT_EQUAL(6675, parser.get_fuel_generation(5));
+        CPPUNIT_ASSERT_EQUAL(6675, parser.get_fuel_generation("WIND"));
         CPPUNIT_ASSERT_EQUAL(20U, (unsigned int)parser.get_fuel_percent(5));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(6)), std::string("PS"));
-        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation(6));
+        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation("PS"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(6));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(7)), std::string("NPSHYD"));
-        CPPUNIT_ASSERT_EQUAL(353, parser.get_fuel_generation(7));
+        CPPUNIT_ASSERT_EQUAL(353, parser.get_fuel_generation("NPSHYD"));
         CPPUNIT_ASSERT_EQUAL(1U, (unsigned int)parser.get_fuel_percent(7));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(8)), std::string("OTHER"));
-        CPPUNIT_ASSERT_EQUAL(27, parser.get_fuel_generation(8));
+        CPPUNIT_ASSERT_EQUAL(27, parser.get_fuel_generation("OTHER"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(8));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(9)), std::string("INTFR"));
-        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation(9));
+        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation("INTFR"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(9));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(10)), std::string("INTIRL"));
-        CPPUNIT_ASSERT_EQUAL(93, parser.get_fuel_generation(10));
+        CPPUNIT_ASSERT_EQUAL(93, parser.get_fuel_generation("INTIRL"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(10));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(11)), std::string("INTNED"));
-        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation(11));
+        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation("INTNED"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(11));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(12)), std::string("INTEW"));
-        CPPUNIT_ASSERT_EQUAL(504, parser.get_fuel_generation(12));
+        CPPUNIT_ASSERT_EQUAL(504, parser.get_fuel_generation("INTEW"));
         CPPUNIT_ASSERT_EQUAL(2U, (unsigned int)parser.get_fuel_percent(12));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(13)), std::string("BIOMASS"));
-        CPPUNIT_ASSERT_EQUAL(2605, parser.get_fuel_generation(13));
+        CPPUNIT_ASSERT_EQUAL(2605, parser.get_fuel_generation("BIOMASS"));
         CPPUNIT_ASSERT_EQUAL(8U, (unsigned int)parser.get_fuel_percent(13));
 
         CPPUNIT_ASSERT_EQUAL(std::string(parser.get_fuel_type(14)), std::string("INTNEM"));
-        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation(14));
+        CPPUNIT_ASSERT_EQUAL(0, parser.get_fuel_generation("INTNEM"));
         CPPUNIT_ASSERT_EQUAL(0U, (unsigned int)parser.get_fuel_percent(14));
-
     }
-
 };
 
 int main()

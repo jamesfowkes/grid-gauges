@@ -86,18 +86,6 @@ void elexon_loop()
     case STATE_DOWNLOADING:
         if (http_handle_get_stream(s_xml_accumulator))
         {
-            char * s = s_xml_accumulator.c_str();
-            Serial.println("Accumulator: ");
-            Serial.print(s_xml_accumulator.length());
-            Serial.println(" bytes");
-            for (uint16_t i = 0; i < s_xml_accumulator.length(); i++)
-            {
-                Serial.print(s[i]);
-                if (i % 32)
-                {
-                    Serial.flush();
-                }
-            }
             s_parser.parse(s_xml_accumulator.c_str(), s_xml_accumulator.length(), true);
             s_state = STATE_DOWNLOADED;
         }
@@ -131,22 +119,13 @@ void elexon_print()
     if (s_state == STATE_DOWNLOADED)
     {
         Serial.print("Latest time: ");
-        Serial.println(s_parser.time());
+        Serial.println(s_parser.epoch_time());
         Serial.print("Total generation: ");
         Serial.print(s_parser.total());
         Serial.println("MW");
         Serial.print("Got ");
         Serial.print(s_parser.fuel_type_count());
-        Serial.println(" fuel types:");
-        for (uint8_t i=0; i<s_parser.fuel_type_count(); i++)
-        {
-            Serial.print(s_parser.get_fuel_type(i));
-            Serial.print(": ");
-            Serial.print(s_parser.get_fuel_generation(i));
-            Serial.print("MW (");
-            Serial.print(s_parser.get_fuel_percent(i));
-            Serial.println("%)");
-        }
+        Serial.println(" fuel types");
     }
 }
 
