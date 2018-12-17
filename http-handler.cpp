@@ -31,7 +31,6 @@ bool http_handle_get_stream(FixedLengthAccumulator& dst)
             size_t size = stream->available();
             while(size)
             {
-                (void)stream->read();
                 dst.writeChar(stream->read());
                 size--;
                 s_download_count++;
