@@ -22,6 +22,8 @@ typedef enum elexon_state ELEXON_STATE;
 
 static const char XML_URL_FORMAT[] = "http://downloads.elexonportal.co.uk/fuel/download/latest?key=%s";
 
+static const bool PRINT_ACCUMULATOR = false;
+
 static char s_api_key[32];
 static Preferences s_preferences;
 
@@ -87,6 +89,23 @@ void elexon_loop()
         if (http_handle_get_stream(s_xml_accumulator))
         {
             s_parser.parse(s_xml_accumulator.c_str(), s_xml_accumulator.length(), true);
+            Serial.println("Elexon download complete");
+            Serial.flush();
+            if (PRINT_ACCUMULATOR)
+            {
+                char * s = s_xml_accumulator.c_str();
+                Serial.println("Accumulator: ");
+                Serial.print(s_xml_accumulator.length());
+                Serial.println(" bytes");
+                for (uint16_t i = 0; i < s_xml_accumulator.length(); i++)
+                {
+                    Serial.print(s[i]);
+                    if (i % 32)
+                    {
+                        Serial.flush();
+                    }
+                }
+            }
             s_state = STATE_DOWNLOADED;
         }
         break;

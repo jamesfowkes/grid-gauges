@@ -9,7 +9,7 @@
 
 #include "http-handler.h"
 
-static HTTPClient s_http_client;
+static HTTPClient * sp_http_client;
 
 static uint16_t s_download_size = 0;
 static uint16_t s_download_count = 0;
@@ -17,28 +17,49 @@ static uint16_t s_download_count = 0;
 bool http_handle_get_stream(FixedLengthAccumulator& dst)
 {
     static unsigned long last_run = 0;
+    
     if (millis() == last_run) { return false; }
+    if (!sp_http_client) { return false; }
 
-    WiFiClient * stream = s_http_client.getStreamPtr();
-    bool done;
+    WiFiClient * stream = sp_http_client->getStreamPtr();
+    bool done = s_download_count == s_download_size;
 
-    done = !s_http_client.connected() || (s_download_count == s_download_size);
-    if (!done)
+    if (stream)
     {
-        size_t size = stream->available();
-        while(size)
+        if (!done)
         {
-            dst.writeChar(stream->read());
-            size--;
-            s_download_count++;
+            size_t size = stream->available();
+            while(size)
+            {
+                (void)stream->read();
+                dst.writeChar(stream->read());
+                size--;
+                s_download_count++;
+            }
+            Serial.println("Stream read end");
+            Serial.print("Download count: ");
+            Serial.println(s_download_count);
+            Serial.print("Download size: ");
+            Serial.println(s_download_size);
+            Serial.flush();
         }
+        done = s_download_count == s_download_size;
     }
     else
+    {
+        Serial.println("No HTTP stream");
+        Serial.flush();
+    }
+    if (done)
     {
         s_download_count = 0;
         s_download_size = 0;
         Serial.println("Done.");
-        s_http_client.end();
+        Serial.flush();
+        Serial.println("HTTP client end");
+        Serial.flush();
+        delete sp_http_client;
+        
     }
 
     return done;
@@ -47,14 +68,18 @@ bool http_handle_get_stream(FixedLengthAccumulator& dst)
 bool http_start_download(char * url)
 {
     bool success = false;
-    s_http_client.setReuse(true);
-    s_http_client.begin(url);
-    int response = s_http_client.GET();
+
+    sp_http_client = new HTTPClient();
+
+    sp_http_client->setReuse(true);
+    sp_http_client->begin(url);
+    int response = sp_http_client->GET();
     Serial.println("Starting download...");
+    Serial.flush();
     switch(response)
     {
         case HTTP_CODE_OK:
-            s_download_size = s_http_client.getSize();
+            s_download_size = sp_http_client->getSize();
             success = s_download_size > 0;
             if (success)
             {
@@ -62,11 +87,13 @@ bool http_start_download(char * url)
                 Serial.print("HTTP GET OK. Streaming ");
                 Serial.print(s_download_size);
                 Serial.println(" bytes...");
+                Serial.flush();
             }
             break;
         default:
             Serial.print("Got HTTP response ");
             Serial.println(response);
+            Serial.flush();
             break;
     }
     return success;
@@ -82,6 +109,7 @@ static void download_state_task_fn(TaskAction* pTask)
         Serial.print(" of ");
         Serial.print(s_download_size);
         Serial.println(" bytes.");
+        Serial.flush();
     }
 }
 static TaskAction s_download_state_task(download_state_task_fn, 100, INFINITE_TICKS);

@@ -26,6 +26,8 @@ void IRAM_ATTR resetModule() {
 void setup()
 {
     Serial.begin(115200);
+    Serial.setDebugOutput(true);
+    esp_log_level_set("*", ESP_LOG_VERBOSE);
 
     pinMode(5, OUTPUT);
 
@@ -36,7 +38,7 @@ void setup()
 
     timer = timerBegin(0, 80, true);
     timerAttachInterrupt(timer, &resetModule, true);
-    timerAlarmWrite(timer, 5000 * 1000, false);
+    timerAlarmWrite(timer, 20000 * 1000, false);
     timerAlarmEnable(timer);
 }
 

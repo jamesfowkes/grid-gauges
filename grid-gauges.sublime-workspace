@@ -4,6 +4,7 @@
 		"selected_items":
 		[
 			[
+<<<<<<< Updated upstream
 				"pro",
 				"process"
 			],
@@ -60,6 +61,84 @@
 				"handle_get_stream"
 			],
 			[
+=======
+				"s_sta",
+				"s_start_download_time"
+			],
+			[
+				"s_t",
+				"s_ntp_time_ok"
+			],
+			[
+				"local",
+				"local_tm"
+			],
+			[
+				"eApp",
+				"eApplicationState_WaitingForDownload"
+			],
+			[
+				"m_",
+				"m_fuel_type_count"
+			],
+			[
+				"parse",
+				"parse_i32"
+			],
+			[
+				"pro",
+				"process"
+			],
+			[
+				"test",
+				"test_file"
+			],
+			[
+				"debu",
+				"debug_buffer"
+			],
+			[
+				"digitl",
+				"digitalWrite\tArduino digitalWrite"
+			],
+			[
+				"s_pr",
+				"s_processor"
+			],
+			[
+				"copy_",
+				"copy_quoted_string"
+			],
+			[
+				"s_down",
+				"s_download_size"
+			],
+			[
+				"sdo",
+				"s_download_count"
+			],
+			[
+				"STATE",
+				"STATE_DOWNLOADING"
+			],
+			[
+				"s_le",
+				"s_download_size"
+			],
+			[
+				"STATE_DO",
+				"STATE_DOWNLOADED"
+			],
+			[
+				"s_",
+				"s_latest_xml"
+			],
+			[
+				"hand",
+				"handle_get_stream"
+			],
+			[
+>>>>>>> Stashed changes
 				"htt",
 				"httpCode"
 			],
@@ -170,10 +249,6 @@
 			[
 				"check",
 				"check_fn"
-			],
-			[
-				"m_",
-				"m_last_value"
 			],
 			[
 				"v",
@@ -498,6 +573,7 @@
 			[
 				"Lib",
 				"Librarrry"
+<<<<<<< Updated upstream
 			],
 			[
 				"tu",
@@ -514,11 +590,14 @@
 			[
 				"trans",
 				"translations_obj"
+=======
+>>>>>>> Stashed changes
 			]
 		]
 	},
 	"buffers":
 	[
+<<<<<<< Updated upstream
 		{
 			"file": "xml-processor.h",
 			"settings":
@@ -580,6 +659,8 @@
 				"line_ending": "Unix"
 			}
 		}
+=======
+>>>>>>> Stashed changes
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -625,6 +706,7 @@
 	],
 	"file_history":
 	[
+<<<<<<< Updated upstream
 		"/home/james/code/grid-gauges/test.xml",
 		"/home/james/code/grid-gauges/latest.xml",
 		"/home/james/code/grid-gauges/xml-processor.cpp",
@@ -646,6 +728,37 @@
 		"/home/james/code/grid-gauges/app-wifi.h",
 		"/home/james/code/grid-gauges/serial-handler.h",
 		"/home/james/code/grid-gauges/app-wifi.cpp",
+=======
+		"/home/james/code/grid-gauges/http-handler.cpp",
+		"/home/james/code/grid-gauges/grid-gauges.ino",
+		"/home/james/code/grid-gauges/elexon.cpp",
+		"/home/james/code/grid-gauges/xml-processor.cpp",
+		"/home/james/code/grid-gauges/ntp.cpp",
+		"/home/james/code/grid-gauges/grid-power.cpp",
+		"/home/james/code/grid-gauges/grid-power.h",
+		"/home/james/code/grid-gauges/user-input.cpp",
+		"/home/james/code/grid-gauges/serial-handler.cpp",
+		"/home/james/code/grid-gauges/xml-parser.cpp",
+		"/home/james/Arduino/libraries/FixedLengthAccumulator/fixed-length-accumulator.h",
+		"/home/james/Arduino/libraries/FixedLengthAccumulator/fixed-length-accumulator.cpp",
+		"/home/james/code/grid-gauges/xml-parser.h",
+		"/home/james/code/grid-gauges/ntp.h",
+		"/home/james/code/grid-gauges/app-wifi.cpp",
+		"/home/james/code/grid-gauges/app-wifi.h",
+		"/home/james/code/grid-gauges/elexon.h",
+		"/home/james/code/grid-gauges/grid-gauges.h",
+		"/home/james/code/grid-gauges/pwm.h",
+		"/home/james/code/grid-gauges/user-input.h",
+		"/home/james/code/grid-gauges/test.xml",
+		"/home/james/code/grid-gauges/pwm.cpp",
+		"/home/james/code/grid-gauges/xml-processor.h",
+		"/home/james/code/grid-gauges/README.md",
+		"/home/james/code/grid-gauges/latest.xml",
+		"/home/james/code/grid-gauges/http-handler.h",
+		"/home/james/code/Libs/Format/Tests/Format/format.test.cpp",
+		"/home/james/code/grid-gauges/serial.cpp",
+		"/home/james/code/grid-gauges/serial-handler.h",
+>>>>>>> Stashed changes
 		"/home/james/code/Libs/utility/util_sequence_generator.h",
 		"/home/james/Arduino/libraries/WIFIMANAGER-ESP32-master/WiFiManager.cpp",
 		"/home/james/Arduino/libraries/WIFIMANAGER-ESP32-master/WiFiManager.h",
@@ -744,6 +857,7 @@
 		"/home/james/code/adl/adl/unittest/adl-logging.h",
 		"/home/james/code/adl/adl/adl_code/logging/example.cpp",
 		"/home/james/code/adl/adl/unittest/adl-mock.h",
+<<<<<<< Updated upstream
 		"/home/james/code/adl/adl/adl_code/adl-util-limited-range-int.cpp",
 		"/home/james/code/adl/adl/unittest/protocol.h",
 		"/home/james/code/adl/adl/unittest/adl-defs.h",
@@ -753,6 +867,9 @@
 		"/home/james/code/adl/adl/unittest/adl-mock-device.cpp",
 		"/home/james/code/adl/adl/unittest/Arduino.h",
 		"/home/james/code/adl/adl/adl_code/protocols/url/unittest/makefile"
+=======
+		"/home/james/code/adl/adl/adl_code/adl-util-limited-range-int.cpp"
+>>>>>>> Stashed changes
 	],
 	"find":
 	{
@@ -763,6 +880,7 @@
 		"height": 98.0,
 		"where_history":
 		[
+			"",
 			"*.py, *.cpp, *.h, *.tpl, *.template, *.xml",
 			"*.py, *.cpp, *.h, *.tpl, *.template",
 			"*.py, *.cpp, *.h, *.tpl",
@@ -793,6 +911,7 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+<<<<<<< Updated upstream
 			"get_fuel_percent",
 			"p_XML_end",
 			"xml",
@@ -833,6 +952,97 @@
 			"pFuel_type",
 			"pInst_end",
 			"p_XML_end",
+=======
+			"http_handle_get_stream",
+			"http_handler_loop",
+			"http_handle_get_stream",
+			"sta",
+			"\".\"",
+			"while",
+			"XMLParser",
+			"elexon_copy",
+			"s_on_download_complete_flag",
+			"GridPower",
+			"s_last_download_time",
+			"parse_time",
+			"tm",
+			"parse_time",
+			"last",
+			"yes",
+			"next_upload_time",
+			"eApplicationFlags",
+			"s_timer",
+			"timer",
+			"led_task_fn",
+			"led",
+			"s_parser",
+			"get_fuel_type_generation",
+			"get_fuel_generation",
+			"get_fuel_type",
+			"get_fuel_generation",
+			"get_fuel_type",
+			"m_powertype_mw",
+			"get_fuel_generation",
+			"U,",
+			"uint32_t",
+			"parse_i32",
+			"uint32_t",
+			"m_powertype_mw",
+			"uint16_t",
+			".total",
+			"ePowerType_",
+			"eGridPower",
+			"processor",
+			"XMLProcessor",
+			"test_processing",
+			"process",
+			"processor",
+			"process",
+			"XMLProcessor",
+			"processor",
+			"s_processor",
+			"processor",
+			"get_fuel_percent",
+			"p_XML_end",
+			"xml",
+			"char * haystack",
+			"char * pEnd",
+			"char * end",
+			"* xml",
+			"myfile",
+			"</FUEL>",
+			"><",
+			"length",
+			"process",
+			"s_processor",
+			"process",
+			"copy_time",
+			"debug_buffer",
+			"DBG",
+			"copy_time",
+			"m_debug",
+			"test_xml",
+			"s_processor",
+			"xml",
+			"handle_get_stream",
+			"begin",
+			"cout",
+			"m_inst_generation_start",
+			"FormatTest",
+			"s_download_state_task",
+			"download_state_task_fn",
+			"time",
+			"handle_get_stream",
+			"static",
+			"    copy_",
+			"copy_",
+			"time",
+			"xml",
+			"pXML_end",
+			"pFuel_type",
+			"pInst_end",
+			"p_XML_end",
+>>>>>>> Stashed changes
 			"pEnd",
 			"HTTPClient",
 			"s_http_client",
@@ -871,6 +1081,7 @@
 			"ADDR?",
 			"pullup",
 			"delay_start",
+<<<<<<< Updated upstream
 			"AT:",
 			"ADDRESS_TYPE_NONE",
 			"adl_board_send",
@@ -921,6 +1132,9 @@
 			"i",
 			"s_TLC5973",
 			"[0"
+=======
+			"AT:"
+>>>>>>> Stashed changes
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -954,6 +1168,7 @@
 	"groups":
 	[
 		{
+<<<<<<< Updated upstream
 			"selected": 6,
 			"sheets":
 			[
@@ -1185,6 +1400,10 @@
 					"stack_index": 0,
 					"type": "text"
 				}
+=======
+			"sheets":
+			[
+>>>>>>> Stashed changes
 			]
 		}
 	],
@@ -1225,7 +1444,7 @@
 	},
 	"output.find_results":
 	{
-		"height": 199.0
+		"height": 490.0
 	},
 	"output.sftp":
 	{
@@ -1239,7 +1458,11 @@
 	"project": "grid-gauges.sublime-project",
 	"replace":
 	{
+<<<<<<< Updated upstream
 		"height": 40.0
+=======
+		"height": 68.0
+>>>>>>> Stashed changes
 	},
 	"save_all_on_build": true,
 	"select_file":

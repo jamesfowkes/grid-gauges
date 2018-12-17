@@ -24,9 +24,11 @@ void ntp_setup()
 
 void ntp_loop()
 {
-    s_time_client.update();
-
-    s_ntp_time_ok = s_time_client.getEpochTime() > START_OF_2018_EPOCH_TIME;
+	s_ntp_time_ok = s_time_client.getEpochTime() > START_OF_2018_EPOCH_TIME;
+	if (!s_ntp_time_ok)
+	{
+    	s_time_client.update();
+	}
     s_ntp_debug_task.tick();
 }
 
