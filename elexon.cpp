@@ -9,8 +9,10 @@
 
 #include "fixed-length-accumulator.h"
 
+#include "grid-gauges.h"
 #include "http-handler.h"
 #include "xml-parser.h"
+#include "ntp.h"
 
 enum elexon_state
 {
@@ -33,10 +35,10 @@ static const uint16_t MAX_XML_SIZE = 4096;
 static char s_xml_buffer[MAX_XML_SIZE];
 static FixedLengthAccumulator s_xml_accumulator(s_xml_buffer, MAX_XML_SIZE);
 
-static bool s_download_flag = false;
-
 static ELEXON_STATE s_state = STATE_INIT;
 static XMLParser s_parser;
+
+static unsigned long s_last_download_time = 0;
 
 static void print_key()
 {
@@ -60,6 +62,29 @@ static void update_url()
     }
 }
 
+static bool is_time_to_download()
+{
+    bool download = false;
+    download |= (s_last_download_time + (6 * 60)) <= ntp_get_time();
+    download |= application_check_flag(eApplicationFlag_Download);
+    return download;
+}
+
+static void print_latest()
+{
+    if (s_state == STATE_DOWNLOADED)
+    {
+        Serial.print("Latest time: ");
+        Serial.println(s_parser.epoch_time());
+        Serial.print("Total generation: ");
+        Serial.print(s_parser.total());
+        Serial.println("MW");
+        Serial.print("Got ");
+        Serial.print(s_parser.fuel_type_count());
+        Serial.println(" fuel types");
+    }
+}
+
 void elexon_setup()
 {
     s_preferences.begin("elexon", false);
@@ -75,9 +100,8 @@ void elexon_loop()
     {
     case STATE_INIT:
     case STATE_DOWNLOADED:
-        if (s_download_flag)
+        if (is_time_to_download())
         {
-            s_download_flag = false;
             s_xml_accumulator.reset();
             if (http_start_download(s_url))
             {
@@ -107,6 +131,8 @@ void elexon_loop()
                 }
             }
             s_state = STATE_DOWNLOADED;
+            s_last_download_time = s_parser.epoch_time();
+            application_set_flag(eApplicationFlag_DownloadComplete);
         }
         break;
     default:
@@ -114,6 +140,11 @@ void elexon_loop()
     }
 
     http_handler_loop();
+
+    if (application_check_flag(eApplicationFlag_Print))
+    {
+        print_latest();
+    }
 }
 void elexon_set_api_key(char * key)
 {
@@ -126,26 +157,6 @@ void elexon_set_api_key(char * key)
 char * elexon_get_api_key()
 {
     return s_api_key;
-}
-
-void elexon_download()
-{
-    s_download_flag = true;
-}
-
-void elexon_print()
-{
-    if (s_state == STATE_DOWNLOADED)
-    {
-        Serial.print("Latest time: ");
-        Serial.println(s_parser.epoch_time());
-        Serial.print("Total generation: ");
-        Serial.print(s_parser.total());
-        Serial.println("MW");
-        Serial.print("Got ");
-        Serial.print(s_parser.fuel_type_count());
-        Serial.println(" fuel types");
-    }
 }
 
 void elexon_copy(char * buffer)

@@ -2,6 +2,7 @@
 
 #include <fixed-length-accumulator.h>
 
+#include "grid-gauges.h"
 #include "elexon.h"
 
 static void handle_complete_buffer(FixedLengthAccumulator& buffer)
@@ -12,11 +13,11 @@ static void handle_complete_buffer(FixedLengthAccumulator& buffer)
     }
     else if (buffer.strncmp("FORCE_DOWNLOAD", 14) == 0)
     {
-        elexon_download();
+        application_set_flag(eApplicationFlag_Download);
     }
     else if (buffer.strncmp("PRINT_LATEST", 12) == 0)
     {
-        elexon_print();
+        application_set_flag(eApplicationFlag_Print);
     }
 }
 

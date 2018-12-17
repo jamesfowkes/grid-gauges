@@ -2,6 +2,7 @@
 #include <TaskAction.h>
 #include <esp_system.h>
 
+#include "grid-gauges.h"
 #include "app-wifi.h"
 #include "user-input.h"
 #include "serial-handler.h"
@@ -21,6 +22,24 @@ static TaskAction s_led_task(led_task_fn, 500, INFINITE_TICKS);
 
 void IRAM_ATTR resetModule() {
     esp_restart();
+}
+
+static bool s_application_flags[APPLICATION_FLAG_COUNT] = {
+    false,
+    false,
+    false
+};
+
+void application_set_flag(eApplicationFlag flag)
+{
+    s_application_flags[flag] = true;
+}
+
+bool application_check_flag(eApplicationFlag flag)
+{
+    bool _flag = s_application_flags[flag];
+    s_application_flags[flag] = false;
+    return _flag;
 }
 
 void setup()
