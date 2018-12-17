@@ -38,7 +38,7 @@ static FixedLengthAccumulator s_xml_accumulator(s_xml_buffer, MAX_XML_SIZE);
 static ELEXON_STATE s_state = STATE_INIT;
 static XMLParser s_parser;
 
-static unsigned long s_last_download_time = 0;
+static unsigned long s_next_download_time = 0;
 
 static void print_key()
 {
@@ -64,10 +64,23 @@ static void update_url()
 
 static bool is_time_to_download()
 {
-    bool download = false;
-    download |= (s_last_download_time + (6 * 60)) <= ntp_get_time();
-    download |= application_check_flag(eApplicationFlag_Download);
-    return download;
+    bool valid_time = ntp_got_valid_time();
+    bool time_to_download = s_next_download_time <= ntp_get_time();
+    bool download_flag = application_check_flag(eApplicationFlag_Download);
+    
+    if (time_to_download)
+    {
+        Serial.print("Downloading on time: ");
+        Serial.print(s_next_download_time);
+        Serial.print(" <= ");
+        Serial.println(ntp_get_time());
+    }
+
+    if (download_flag)
+    {
+        Serial.println("Downloading on flag.");
+    }
+    return valid_time && (time_to_download || download_flag);
 }
 
 static void print_latest()
@@ -94,20 +107,27 @@ void elexon_setup()
     update_url();
 }
 
+static void idle_task_fn(TaskAction* pTask)
+{
+    (void)pTask;
+    if (is_time_to_download())
+    {
+        s_xml_accumulator.reset();
+        if (http_start_download(s_url))
+        {
+            s_state = STATE_DOWNLOADING;
+        } 
+    }
+}
+static TaskAction s_idle_task(idle_task_fn, 1000, INFINITE_TICKS);
+
 void elexon_loop()
 {
     switch(s_state)
     {
     case STATE_INIT:
     case STATE_DOWNLOADED:
-        if (is_time_to_download())
-        {
-            s_xml_accumulator.reset();
-            if (http_start_download(s_url))
-            {
-                s_state = STATE_DOWNLOADING;
-            } 
-        }
+        s_idle_task.tick();
         break;
     case STATE_DOWNLOADING:
         if (http_handle_get_stream(s_xml_accumulator))
@@ -131,7 +151,7 @@ void elexon_loop()
                 }
             }
             s_state = STATE_DOWNLOADED;
-            s_last_download_time = s_parser.epoch_time();
+            s_next_download_time = ntp_get_time() + (6 * 60);
             application_set_flag(eApplicationFlag_DownloadComplete);
         }
         break;
