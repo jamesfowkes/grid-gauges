@@ -23,6 +23,7 @@ enum elexon_state
 typedef enum elexon_state ELEXON_STATE;
 
 static const char XML_URL_FORMAT[] = "http://downloads.elexonportal.co.uk/fuel/download/latest?key=%s";
+static const uint16_t DOWNLOAD_INTERVAL = (5 * 60);
 
 static const bool PRINT_ACCUMULATOR = false;
 
@@ -119,7 +120,7 @@ static void idle_task_fn(TaskAction* pTask)
         } 
     }
 }
-static TaskAction s_idle_task(idle_task_fn, 1000, INFINITE_TICKS);
+static TaskAction s_idle_task(idle_task_fn, 5000, INFINITE_TICKS);
 
 void elexon_loop()
 {
@@ -133,7 +134,12 @@ void elexon_loop()
         if (http_handle_get_stream(s_xml_accumulator))
         {
             s_parser.parse(s_xml_accumulator.c_str(), s_xml_accumulator.length(), true);
-            Serial.println("Elexon download complete");
+            Serial.print("Elexon download complete (XML time ");
+            Serial.print(s_parser.epoch_time());
+            Serial.print(", NTP time ");
+            Serial.print(ntp_get_time());
+            Serial.println(")");
+
             Serial.flush();
             if (PRINT_ACCUMULATOR)
             {
@@ -151,7 +157,7 @@ void elexon_loop()
                 }
             }
             s_state = STATE_DOWNLOADED;
-            s_next_download_time = ntp_get_time() + (6 * 60);
+            s_next_download_time = ntp_get_time() + DOWNLOAD_INTERVAL;
             application_set_flag(eApplicationFlag_DownloadComplete);
         }
         break;

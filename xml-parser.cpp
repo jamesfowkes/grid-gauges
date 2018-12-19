@@ -5,17 +5,18 @@
 #include <time.h>
 #include "xml-parser.h"
 
-char dbg_buf[16];
+#define DBG_SIZE 32
+char dbg_buf[DBG_SIZE];
 
 #ifdef UNIT_TEST
 
 #include <iostream>
-#define DBG(x) if (m_debug) { memcpy(dbg_buf, x, 15); dbg_buf[15] =  '\0'; std::cout << dbg_buf << std::endl; }
+#define DBG(x) if (m_debug) { memcpy(dbg_buf, x, DBG_SIZE-1); dbg_buf[DBG_SIZE-1] =  '\0'; std::cout << dbg_buf << std::endl; }
 
 #else
 
 #include <Arduino.h>
-#define DBG(x) if (m_debug) { memcpy(dbg_buf, x, 15); dbg_buf[15] =  '\0'; Serial.println(dbg_buf); }
+#define DBG(x) if (m_debug) { memcpy(dbg_buf, x, DBG_SIZE-1); dbg_buf[DBG_SIZE-1] =  '\0'; Serial.println(dbg_buf); }
 
 #endif
 
