@@ -3,6 +3,8 @@
 #include <fixed-length-accumulator.h>
 
 #include "grid-gauges.h"
+#include "xml-parser.h"
+#include "grid-power.h"
 #include "elexon.h"
 
 static void handle_complete_buffer(FixedLengthAccumulator& buffer)

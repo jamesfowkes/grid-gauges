@@ -7,5 +7,7 @@ void elexon_set_api_key(char * key);
 void elexon_download();
 void elexon_print();
 
+void elexon_update(GridPower& power);
+
 #endif
 

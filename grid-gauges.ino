@@ -6,9 +6,10 @@
 #include "app-wifi.h"
 #include "user-input.h"
 #include "serial-handler.h"
+#include "xml-parser.h"
+#include "grid-power.h"
 #include "elexon.h"
 #include "ntp.h"
-#include "xml-parser.h"
 
 static hw_timer_t *timer = NULL;
 
@@ -23,6 +24,8 @@ static TaskAction s_led_task(led_task_fn, 500, INFINITE_TICKS);
 void IRAM_ATTR resetModule() {
     esp_restart();
 }
+
+static GridPower s_grid_power;
 
 static bool s_application_flags[APPLICATION_FLAG_COUNT] = {
     false,
@@ -76,6 +79,12 @@ void loop()
         Serial.println("Restarting...");
         ESP.restart();
         delay(1000);
+    }
+
+    if (application_check_flag(eApplicationFlag_DownloadComplete))
+    {
+        elexon_update(s_grid_power);
+        s_grid_power.print(Serial);
     }
 
     s_led_task.tick();

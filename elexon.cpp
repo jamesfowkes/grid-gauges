@@ -13,6 +13,7 @@
 #include "http-handler.h"
 #include "xml-parser.h"
 #include "ntp.h"
+#include "grid-power.h"
 
 enum elexon_state
 {
@@ -158,6 +159,8 @@ void elexon_loop()
             }
             s_state = STATE_DOWNLOADED;
             s_next_download_time = ntp_get_time() + DOWNLOAD_INTERVAL;
+
+            
             application_set_flag(eApplicationFlag_DownloadComplete);
         }
         break;
@@ -188,4 +191,9 @@ char * elexon_get_api_key()
 void elexon_copy(char * buffer)
 {
     strcpy(buffer, s_xml_accumulator.c_str());
+}
+
+void elexon_update(GridPower& power)
+{
+    power.update(s_parser);
 }
